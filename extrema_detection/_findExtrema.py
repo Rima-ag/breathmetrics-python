@@ -69,7 +69,7 @@ def find_corrected_extrema(y, peaks_idx, troughs_idx):
     t_fast = t_slow + 1
 
     while p_slow < len(peaks_idx) and t_slow < len(troughs_idx):
-        if p_slow < len(peaks_idx) - 1:
+        if p_fast < len(peaks_idx):
             p_t_offset = troughs_idx[t_slow] - peaks_idx[p_slow]
             p_p_offset = peaks_idx[p_fast] - peaks_idx[p_slow]
 
@@ -82,7 +82,7 @@ def find_corrected_extrema(y, peaks_idx, troughs_idx):
                 
                 continue
 
-        if t_slow < len(troughs_idx) - 1:
+        if t_fast < len(troughs_idx):
             p_t_offset = troughs_idx[t_slow] - peaks_idx[p_slow]
             t_t_offset = troughs_idx[t_fast] - troughs_idx[t_slow]
 

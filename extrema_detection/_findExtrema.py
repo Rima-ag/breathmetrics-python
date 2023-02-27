@@ -2,10 +2,15 @@ import numpy as np
 from math import floor
 
 SHIFT = 3
-WINDOW_SIZES = [300, 500, 700, 1000, 5000]
-def find_potential_extrema(y, window_sizes = WINDOW_SIZES, shift = SHIFT):
+WINDOW_SIZES = [300, 500, 700, 1000, 5000] # ms
+
+
+def find_potential_extrema(y, sr, window_sizes_ms = WINDOW_SIZES, shift = SHIFT):
     troughs = []
     peaks = []
+    
+    # converts window size from ms to number of samples
+    window_sizes = np.floor(sr / 1000 * np.array(window_sizes_ms)).astype(int)
 
     for w_size in window_sizes:
         troughs.append([])

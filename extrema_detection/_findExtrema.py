@@ -110,4 +110,4 @@ def find_corrected_extrema(y, peaks_idx, troughs_idx):
         p_slow = p_fast; p_fast += 1 
         t_slow = t_fast; t_fast += 1
         
-    return corrected_peaks, corrected_troughs
+    return np.array(corrected_peaks), np.array(corrected_troughs)

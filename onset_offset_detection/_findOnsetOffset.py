@@ -63,8 +63,10 @@ def find_onsets(y, peaks_idx, troughs_idx):
     
     inhale_onsets = np.empty(peaks_idx.shape).astype(int)
     inhale_pause_onsets = np.empty(peaks_idx.shape)
+    inhale_pause_onsets[:] = np.nan
     exhale_onsets = np.empty(troughs_idx.shape).astype(int)
     exhale_pause_onsets = np.empty(troughs_idx.shape)
+    exhale_pause_onsets[:] = np.nan
 
     # First inhale onset:
     avg_breath_dur = floor(np.array([peaks_idx[i + 1] - peaks_idx[i] for i in range(len(peaks_idx) - 1)]).mean())
@@ -106,3 +108,36 @@ def find_onsets(y, peaks_idx, troughs_idx):
                           else last_zero_cross_boundary
     
     return inhale_onsets, exhale_onsets, inhale_pause_onsets, exhale_pause_onsets
+
+
+def find_offsets(y, inhale_onsets, exhale_onsets, inhale_pause_onsets, exhale_pause_onsets):
+    inhale_offsets = np.zeros(inhale_onsets.shape)
+    exhale_offsets = np.zeros(exhale_onsets.shape)
+
+    for breath in range(len(exhale_onsets)):
+        if np.isnan(inhale_pause_onsets[breath]):
+            inhale_offsets[breath] = exhale_onsets[breath] - 1
+        else:
+            inhale_offsets[breath] = inhale_pause_onsets[breath] - 1
+
+    for breath in range(len(exhale_onsets) - 1):
+        if np.isnan(exhale_pause_onsets[breath]):
+            exhale_offsets[breath] = inhale_onsets[breath + 1] - 1
+        else:
+            exhale_offsets[breath] = exhale_pause_onsets[breath] - 1
+
+    final_window = y[exhale_onsets[-1]:]
+    potential_exhale_offset = np.where(final_window > 0)[0]
+
+    avg_exhale_dur = (exhale_offsets[:-1] - exhale_onsets[:-1]).mean()
+    lower_lim = avg_exhale_dur / 4
+    upper_lim = avg_exhale_dur * 1.75
+
+    if len(potential_exhale_offset) == 0 or \
+        potential_exhale_offset[0] < lower_lim or potential_exhale_offset[0] > upper_lim:
+        exhale_offsets[-1] = np.nan
+    else:
+        exhale_offsets[-1] = exhale_onsets[-1] + potential_exhale_offset[0] - 1
+
+    return inhale_offsets, exhale_offsets
+    

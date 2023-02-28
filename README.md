@@ -5,7 +5,7 @@ Implementation of the [BreathMetrics](https://github.com/zelanolab/breathmetrics
 - [ ] Get data
 - [ ] Data augmentation and smoothing
 - [x] Inhale and Exhale extrema Detection
-- [ ] Onsets, offsets and pause detection
+- [x] Onsets, offsets and pause detection
 - [ ] Metrics:
   - [ ] Breathing rate
   - [ ] Inter-breathe interval

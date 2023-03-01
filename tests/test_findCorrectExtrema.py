@@ -1,11 +1,11 @@
 import unittest
-from extrema_detection import find_corrected_extrema
 import numpy as np
 from numpy.testing import assert_array_equal
+from extrema_detection import find_corrected_extrema
 
 
 class TestFindCorrectExtrema(unittest.TestCase):
-    def test_startWithTroughs(self):
+    def test__start_with_troughs(self):
         single = np.array([0, 1, 0.9, 0, 0.1, 0.9, 1, 0.1, 0])
         potential_p_single = [1, 6]
         potential_t_single = [0, 3, 7]
@@ -30,7 +30,7 @@ class TestFindCorrectExtrema(unittest.TestCase):
             corrected_t_multiple, [6, 10], "Should remove all the first troughs only"
         )
 
-    def test_2ConsecutiveTroughs(self):
+    def test__2_consecutive_troughs(self):
         remove_trough = np.array([1, 0.9, 0, 0.1, 0.9, 1, 0.1, 0])
         potential_p = [0, 5]
         potential_t = [2, 3, 6, 7]
@@ -43,7 +43,7 @@ class TestFindCorrectExtrema(unittest.TestCase):
             corrected_t, [2, 6], "Should remove all the first troughs only"
         )
 
-    def test_MultipleConsecutiveTroughs(self):
+    def test__multiple_consecutive_troughs(self):
         remove_trough = np.array(
             [
                 1,
@@ -82,7 +82,7 @@ class TestFindCorrectExtrema(unittest.TestCase):
             corrected_t, [10, 21], "Should keep one of consecutive troughs only"
         )
 
-    def test_2ConsecutivePeaks(self):
+    def test__2_consecutive_peaks(self):
         remove_peak = np.array([1, 0.9, 0, 0.1, 0.9, 1, 0.1, 0])
         potential_p = [0, 1, 4, 5]
         potential_t = [2, 6]
@@ -93,7 +93,7 @@ class TestFindCorrectExtrema(unittest.TestCase):
         assert_array_equal(corrected_p, [0, 5], "Should remove consecutive peaks only")
         assert_array_equal(corrected_t, [2, 6], "Should keep all troughs")
 
-    def test_MultipleConsecutivePeaks(self):
+    def test__multiple_consecutive_peaks(self):
         remove_peaks = np.array(
             [
                 1,
@@ -132,7 +132,7 @@ class TestFindCorrectExtrema(unittest.TestCase):
         )
         assert_array_equal(corrected_t, [10, 21], "Should keep all troughs")
 
-    def test_allremoval(self):
+    def test__all_removal(self):
         remove_all = np.array(
             [
                 0,

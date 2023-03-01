@@ -1,5 +1,5 @@
-import numpy as np
 from math import floor
+import numpy as np
 
 
 def hist(window, n_bins):
@@ -18,6 +18,7 @@ def find_extrema_pause_onset(
     upper_bins,
     lower_bins,
     min_bins_for_pause,
+    max_pause_bins,
     signal_zero_cross,
 ):
     pts_per_bin, bin_edges, mode_bin = hist(window, n_bins)
@@ -95,7 +96,7 @@ def find_onsets(y, peaks_idx, troughs_idx):
     )
 
     window = y[first_zero_cross_boundary : peaks_idx[0]]
-    pts_per_bin, bin_edges, mode_bin = hist(window, n_bins)
+    _, bin_edges, mode_bin = hist(window, n_bins)
 
     zero_cross_threshold = (
         signal_zero_cross
@@ -122,6 +123,7 @@ def find_onsets(y, peaks_idx, troughs_idx):
             upper_bins,
             lower_bins,
             min_bins_for_pause,
+            max_pause_bins,
             signal_zero_cross,
         )
 
@@ -134,6 +136,7 @@ def find_onsets(y, peaks_idx, troughs_idx):
             upper_bins,
             lower_bins,
             min_bins_for_pause,
+            max_pause_bins,
             signal_zero_cross,
         )
 

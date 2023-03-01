@@ -1,11 +1,14 @@
-import numpy as np
 from math import floor
+import numpy as np
 
 SHIFT = 3
 WINDOW_SIZES = [300, 500, 700, 1000, 5000]  # ms
 
 
-def find_potential_extrema(y, sr, window_sizes_ms=WINDOW_SIZES, shift=SHIFT):
+def find_potential_extrema(y, sr, window_sizes_ms=None, shift=SHIFT):
+    if window_sizes_ms is None:
+        window_sizes_ms = WINDOW_SIZES
+
     troughs = []
     peaks = []
 
@@ -29,7 +32,10 @@ def find_potential_extrema(y, sr, window_sizes_ms=WINDOW_SIZES, shift=SHIFT):
     return peaks, troughs
 
 
-def find_threshold(votes, window_sizes=WINDOW_SIZES, shift=SHIFT):
+def find_threshold(votes, window_sizes=None, shift=SHIFT):
+    if window_sizes is None:
+        window_sizes = WINDOW_SIZES
+
     count_threshold = np.arange(1, len(window_sizes) * shift)
 
     n_extrema = []
@@ -46,7 +52,10 @@ def find_threshold(votes, window_sizes=WINDOW_SIZES, shift=SHIFT):
     return imax
 
 
-def PWCT(peaks, troughs, window_sizes=WINDOW_SIZES, shift=SHIFT):
+def pwct(peaks, troughs, window_sizes=None, shift=SHIFT):
+    if window_sizes is None:
+        window_sizes = WINDOW_SIZES
+
     _peaks = np.hstack(tuple(peaks)).flatten()
     _troughs = np.hstack(tuple(troughs)).flatten()
 

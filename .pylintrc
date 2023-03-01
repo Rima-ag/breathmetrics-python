@@ -11,6 +11,6 @@ module-name-hint=(([a-z_][A-Za-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 # List of note tags to take in consideration, separated by a comma.
 notes=FIXME,XXX,TODO
 
-; [pre-commit-hook]
-; command=custom_pylint
-; disable=C0115, 
+[pre-commit-hook]
+command=custom_pylint
+disable=E0401, C0301

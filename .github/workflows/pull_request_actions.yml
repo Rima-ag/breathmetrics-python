@@ -26,6 +26,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          
+      - name: Lint check
+        run: python lint.py -p ../breathmetrics-python/
 
       - name: Run Tests
         run: python -m unittest

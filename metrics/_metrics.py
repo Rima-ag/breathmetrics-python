@@ -14,7 +14,8 @@ def find_interbreath_interval(sr, inhale_onsets):
     return time_between.mean()
 
 
-def find_breathing_rate(inter_breath_interval):
+def find_breathing_rate(sr, inhale_onsets):
+    inter_breath_interval = find_interbreath_interval(sr, inhale_onsets)
     return 1 / inter_breath_interval
 
 
@@ -30,7 +31,7 @@ def find_volumes(y, sr, inhale_onsets, inhale_offsets, exhale_onsets, exhale_off
     for breath in range(inhale_onsets.shape[0]):
         if not np.isnan(inhale_offsets[breath]):
             inhale_volumes[breath] = abs(
-                y[inhale_onsets[breath] : inhale_offsets[breath] + 1]
+                y[inhale_onsets[breath] : int(inhale_offsets[breath]) + 1]
             ).sum()
         else:
             inhale_volumes[breath] = np.nan
@@ -38,7 +39,7 @@ def find_volumes(y, sr, inhale_onsets, inhale_offsets, exhale_onsets, exhale_off
     for breath in range(exhale_onsets.shape[0]):
         if not np.isnan(exhale_offsets[breath]):
             exhale_volumes[breath] = abs(
-                y[exhale_onsets[breath] : exhale_offsets[breath] + 1]
+                y[exhale_onsets[breath] : int(exhale_offsets[breath]) + 1]
             ).sum()
         else:
             exhale_volumes[breath] = np.nan
@@ -50,15 +51,15 @@ def find_volumes(y, sr, inhale_onsets, inhale_offsets, exhale_onsets, exhale_off
 
 
 def find_coef_var_breath_volumes(inhale_volumes):
-    return inhale_volumes.nanstd() / inhale_volumes.nanmean()
+    return np.nanstd(inhale_volumes) / np.nanmean(inhale_volumes)
 
 
 def find_tidal_volume(inhale_volumes, exhale_volumes):
-    return inhale_volumes.nanmean() + exhale_volumes.nanmean()
+    return np.nanmean(inhale_volumes) + np.nanmean(exhale_volumes)
 
 
-def minute_ventilation(breathing_rate, tidal_volume):
-    return breathing_rate * tidal_volume
+def find_minute_ventilation(breathing_rate, tidal_volume):
+    return breathing_rate * tidal_volume * 60
 
 
 def find_duration(sr, onsets, offsets):
@@ -68,13 +69,14 @@ def find_duration(sr, onsets, offsets):
             duration[breath] = offsets[breath] - onsets[breath]
         else:
             duration[breath] = np.nan
+    return duration
 
 
 def find_duty_cycle(sr, onsets, offsets, interbreath_interval):
     duration = find_duration(sr, onsets, offsets)
-    return duration.nanmean() / interbreath_interval
+    return np.nanmean(duration) / interbreath_interval
 
 
 def find_coef_var_duty_cycle(sr, onsets, offsets):
     duration = find_duration(sr, onsets, offsets)
-    return duration.nanstd() / duration.nanmean()
+    return np.nanstd(duration) / np.nanmean(duration)

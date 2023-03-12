@@ -1,9 +1,13 @@
 import numpy as np
 
+
 def find_time_between_breaths(sr, inhale_onsets):
-    samples_between = np.array([inhale_onsets[i + 1] - inhale_onsets[i] for i in range(len(inhale_onsets) - 1)])
+    samples_between = np.array(
+        [inhale_onsets[i + 1] - inhale_onsets[i] for i in range(len(inhale_onsets) - 1)]
+    )
     time_between = samples_between / sr
     return time_between
+
 
 def find_interbreath_interval(sr, inhale_onsets):
     time_between = find_time_between_breaths(sr, inhale_onsets)
@@ -25,13 +29,17 @@ def find_volumes(y, sr, inhale_onsets, inhale_offsets, exhale_onsets, exhale_off
 
     for breath in range(inhale_onsets.shape[0]):
         if not np.isnan(inhale_offsets[breath]):
-            inhale_volumes[breath] = abs(y[inhale_onsets[breath] : inhale_offsets[breath] + 1]).sum()
+            inhale_volumes[breath] = abs(
+                y[inhale_onsets[breath] : inhale_offsets[breath] + 1]
+            ).sum()
         else:
             inhale_volumes[breath] = np.nan
 
     for breath in range(exhale_onsets.shape[0]):
         if not np.isnan(exhale_offsets[breath]):
-            exhale_volumes[breath] = abs(y[exhale_onsets[breath] : exhale_offsets[breath] + 1]).sum()
+            exhale_volumes[breath] = abs(
+                y[exhale_onsets[breath] : exhale_offsets[breath] + 1]
+            ).sum()
         else:
             exhale_volumes[breath] = np.nan
 

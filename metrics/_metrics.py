@@ -69,6 +69,8 @@ def find_duration(sr, onsets, offsets):
             duration[breath] = offsets[breath] - onsets[breath]
         else:
             duration[breath] = np.nan
+
+    duration = duration / sr
     return duration
 
 

@@ -36,7 +36,7 @@ def find_extrema_pause_onset(
             (window <= signal_zero_cross if is_inhale else window > signal_zero_cross)
         )[0]
 
-        extrema_onset = sample_offset + idx[-1]
+        extrema_onset = sample_offset + (idx[-1] if idx.size > 0 else 0)
         pause_onset = np.nan
 
     else:
@@ -59,8 +59,7 @@ def find_extrema_pause_onset(
             if n_pts_added > max_pts_total * binning_thres:
                 max_pause_range = bin_edges[_bin]
 
-        pause_idx = np.where((window > min_pause_range) & (window < max_pause_range))
-        print(pause_idx)
+        pause_idx = np.where((window > min_pause_range) & (window < max_pause_range))[0]
         extrema_onset = sample_offset + pause_idx[-1] + 1
         pause_onset = sample_offset + pause_idx[0] - 1
 

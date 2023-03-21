@@ -60,3 +60,7 @@ def find_local_drift(y, sr, period):
 
 def remove_local_drift(y, sr, period=60):
     return y - find_local_drift(y, sr, period)
+
+
+def z_score(y):
+    return (y - y.mean()) / y.std()

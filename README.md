@@ -2,8 +2,8 @@
 Implementation of the [BreathMetrics](https://github.com/zelanolab/breathmetrics) Matlab toolbox in Python
 
 # Features
-- [ ] Get data
-- [ ] Data augmentation and smoothing
+- [x] Get data
+- [x] Data augmentation and smoothing
 - [x] Inhale and Exhale extrema Detection
 - [x] Onsets, offsets and pause detection
 - [x] Metrics:

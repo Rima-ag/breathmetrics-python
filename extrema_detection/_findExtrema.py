@@ -113,7 +113,15 @@ def find_corrected_extrema(y, peaks_idx, troughs_idx):
 
                 continue
 
+        reset = False
         p_t_offset = troughs_idx[t_slow] - peaks_idx[p_slow]
+        while p_t_offset <= 0:
+            reset = True
+            t_slow += 1
+            t_fast += 1
+            p_t_offset = troughs_idx[t_slow] - peaks_idx[p_slow]
+        if reset:
+            continue
         assert (
             p_t_offset > 0
         ), f"Unexpected Error: peak found at {peaks_idx[p_slow]} after trough found at {troughs_idx[t_slow]},\n\

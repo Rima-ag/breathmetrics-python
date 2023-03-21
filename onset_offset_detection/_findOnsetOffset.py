@@ -143,7 +143,7 @@ def find_onsets(y, peaks_idx, troughs_idx):
     if y.shape[0] - peaks_idx[-1] > avg_breath_dur:
         last_zero_cross_boundary = peaks_idx[-1] + avg_breath_dur
     else:
-        last_zero_cross_boundary = y.shape[0]
+        last_zero_cross_boundary = y.shape[0] - 1
 
     exhale_window = y[peaks_idx[-1] : last_zero_cross_boundary]
     last_potential_exhale = np.where(exhale_window < signal_zero_cross)[0]
